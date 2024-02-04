@@ -1,15 +1,27 @@
-Project Setup
-Navigate to the frontend directory:
-```
+# BlueKyteAI Project - Frontend
+
+This repository contains the frontend code for the BlueKyteAI project.
+
+## Prerequisites
+
+Make sure you have [npm](https://www.npmjs.com/) installed on your system.
+
+## Getting Started
+
+Follow these steps to set up and run the frontend:
+
+### 1.Navigate to the `myfrontend` directory:
+
+```bash
 cd myfrontend
 ```
 
-Install dependencies:
+### 2.Install dependencies:
 
 ```bash
 npm install
 ```
-Run the development server:
+### 3.Run the development server:
 
 ```bash
 npm start
