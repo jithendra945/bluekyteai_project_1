@@ -1,10 +1,10 @@
-// frontend/myfrontend/src/AddTask.js
+// frontend/myfrontend/src/AddOrUpdateTask.js
 import React, { useState, useEffect } from 'react';
 import { createTask, getTask, updateTask } from './api';
-import './AddTask.css';
+import './AddOrUpdateTask.css';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const AddTask = () => {
+const AddOrUpdateTask = () => {
   const navigate = useNavigate();
   const { taskId } = useParams();  // Get the taskId from the route parameters
   const [taskData, setTaskData] = useState({
@@ -88,4 +88,4 @@ const AddTask = () => {
   );
 };
 
-export default AddTask;
+export default AddOrUpdateTask;

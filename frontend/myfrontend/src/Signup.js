@@ -70,6 +70,9 @@ const Signup = () => {
       <p>
         Already have an account? <Link to="/login">Login</Link>
       </p>
+      <p>
+        Redirect to <Link to="/">Home</Link>
+      </p>
     </div>
   );
 };

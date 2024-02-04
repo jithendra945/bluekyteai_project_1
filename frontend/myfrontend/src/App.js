@@ -1,9 +1,9 @@
 // frontend/myfrontend/src/App.js
 import React, { useState, useEffect } from 'react';
 import { Link, Routes, Route, useNavigate } from 'react-router-dom';
-import { getTasks, logout } from './api';
+import { getTasks, logout, deleteTask } from './api';
 import TaskList from './TaskList';
-import AddTask from './AddTask';
+import AddOrUpdateTask from './AddOrUpdateTask';
 
 const App = () => {
   const [tasks, setTasks] = useState([]);
@@ -48,31 +48,51 @@ const App = () => {
   };
 
   const handleUpdateTask = (taskId) => {
-    // Navigate to the AddTask page with the task ID as a route parameter
+    // Navigate to the AddOrUpdateTask page with the task ID as a route parameter
     navigate(`/add-task/${taskId}`);
   };
 
-  const handleDeleteTask = (taskId) => {
-    // Handle delete logic, e.g., send delete request to API
-    console.log(`Delete task with ID: ${taskId}`);
+  const handleDeleteTask = async (taskId) => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this task?');
+
+    if (confirmDelete) {
+      try {
+        // Delete the task using the deleteTask API function
+        await deleteTask(taskId);
+        
+        // After successful deletion, update the tasks list
+        const updatedTasks = tasks.filter((task) => task.id !== taskId);
+        setTasks(updatedTasks);
+      } catch (error) {
+        console.error(`Error deleting task with ID ${taskId}:`, error);
+      }
+    }
+  };
+
+  // If already logged in, hide login/signup buttons
+  const renderAuthButtons = () => {
+    if (!loggedIn) {
+      return (
+        <div className="nav-links">
+          <Link to="/signup">Signup</Link>
+          <Link to="/login">Login</Link>
+        </div>
+      );
+    }
+    return <button onClick={handleLogout}>Logout</button>;
   };
 
   return (
     <div className="app-container">
       <h1>Task Management App</h1>
+      {renderAuthButtons()}
       {loggedIn && (
         <>
-          <button onClick={handleLogout}>Logout</button>
           <TaskList tasks={tasks} onUpdate={handleUpdateTask} onDelete={handleDeleteTask} />
           <div className="nav-links">
             <Link to="/add-task">Add Task</Link>
           </div>
         </>
-      )}
-      {loggedIn && tasks && tasks.length === 0 && (
-        <div>
-          <p>No tasks available.</p>
-        </div>
       )}
     </div>
   );

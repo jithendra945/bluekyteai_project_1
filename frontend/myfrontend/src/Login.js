@@ -73,6 +73,9 @@ const Login = () => {
       <p>
         New user? <Link to="/signup">Signup</Link>
       </p>
+      <p>
+        Redirect to <Link to="/">Home</Link>
+      </p>
     </div>
   );
 };
