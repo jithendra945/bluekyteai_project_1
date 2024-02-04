@@ -60,7 +60,7 @@ const App = () => {
     <div className="app-container">
       <h1>Task Management App</h1>
       {renderAuthButtons()}
-      {loggedIn && tasks.length === 0 ? (
+      {loggedIn && (!tasks || tasks.length === 0) ? (
         <div>
           <p>No tasks available.</p>
           <Link to="/add-task">Add Task</Link>
