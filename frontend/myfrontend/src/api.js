@@ -35,9 +35,19 @@ export const signup = (userData, onSuccess) => {
     });
 };
 
-export const login = (userData) => api.post('auth/token/', userData);
-export const logout = () => api.post('auth/logout/');
+export const login = (userData) => {
+  return api.post('auth/token/', userData)
+    .then(response => {
+      const token = response.data.token;
+      localStorage.setItem('token', token);
+      return response;
+    });
+};
 
+export const logout = () => {
+  localStorage.removeItem('token'); // Remove token from local storage on logout
+  return api.post('auth/logout/');
+};
 // Tasks API
 // frontend/myfrontend/src/api.js
 export const getTasks = () => {
