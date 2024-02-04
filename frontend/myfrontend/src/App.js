@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Routes, Route } from 'react-router-dom';
 import { getTasks, logout } from './api';
-import AddTask from './AddTask';
 
 const TaskList = ({ tasks }) => (
   <ul>
@@ -22,11 +21,24 @@ const App = () => {
     const fetchTasks = async () => {
       try {
         const response = await getTasks();
-        setTasks(response.data);
+        console.log('Tasks:', response);
+        // Check if response.data is defined before mapping
+        if (response) {
+          const transformedTasks = response.map(task => ({
+            id: task.id,
+            title: task.title,
+            description: task.description,
+            status: task.status,
+          }));
+          setTasks(transformedTasks);
+        } else {
+          console.error('Error fetching tasks: Unexpected response structure');
+        }
       } catch (error) {
         console.error('Error fetching tasks:', error);
       }
     };
+    
 
     if (loggedIn) {
       fetchTasks();
@@ -60,19 +72,13 @@ const App = () => {
     <div className="app-container">
       <h1>Task Management App</h1>
       {renderAuthButtons()}
-      {loggedIn && (!tasks || tasks.length === 0) ? (
+      {loggedIn && tasks && tasks.length === 0 && (
         <div>
           <p>No tasks available.</p>
           <Link to="/add-task">Add Task</Link>
         </div>
-      ) : (
-        <>
-          <TaskList tasks={tasks} />
-          <Routes>
-            <Route path="/add-task" element={<AddTask />} />
-          </Routes>
-        </>
       )}
+      {loggedIn && tasks && tasks.length > 0 && <TaskList tasks={tasks} />}
     </div>
   );
 };
