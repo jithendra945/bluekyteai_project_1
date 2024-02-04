@@ -50,25 +50,33 @@ export const logout = () => {
   localStorage.removeItem('token'); // Remove token from local storage on logout
   return api.post('auth/logout/');
 };
+
 // Tasks API
-// frontend/myfrontend/src/api.js
 export const getTasks = () => {
   return api.get('tasks/')
     .then(response => response.data)
-    .catch(error => {
-      // Check if the error is due to unauthorized (401) and handle it accordingly
-      if (error.response && error.response.status === 401) {
-        console.error('Unauthorized access. Logging out...');
-        // Optionally, you can log the user out when unauthorized
-        // Logout logic can be added here
-      }
-      console.error('Error fetching tasks:', error);
-      throw error;  // Rethrow the error to propagate it to the calling code
-    });
+    .catch(handleError);
+};
+
+export const getTask = (taskId) => {
+  return api.get(`tasks/${taskId}/`)
+    .then(response => response.data)
+    .catch(handleError);
 };
 
 export const createTask = (taskData) => api.post('tasks/', taskData);
 export const updateTask = (taskId, taskData) => api.put(`tasks/${taskId}/`, taskData);
 export const deleteTask = (taskId) => api.delete(`tasks/${taskId}/`);
+
+// Error handler for tasks API
+const handleError = (error) => {
+  // Check if the error is due to unauthorized (401) and handle it accordingly
+  if (error.response && error.response.status === 401) {
+    console.error('Unauthorized access. Logging out...');
+    logout();
+  }
+  console.error('Error:', error);
+  throw error;  // Rethrow the error to propagate it to the calling code
+};
 
 export default api;

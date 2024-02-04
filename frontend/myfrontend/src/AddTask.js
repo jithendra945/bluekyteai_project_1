@@ -1,39 +1,66 @@
 // frontend/myfrontend/src/AddTask.js
-import React, { useState } from 'react';
-import { createTask } from './api';
+import React, { useState, useEffect } from 'react';
+import { createTask, getTask, updateTask } from './api';
 import './AddTask.css';
-import { useNavigate } from 'react-router-dom';  // Import useNavigate hook
+import { useNavigate, useParams } from 'react-router-dom';
 
 const AddTask = () => {
-  const navigate = useNavigate();  // Initialize navigate from useNavigate
+  const navigate = useNavigate();
+  const { taskId } = useParams();  // Get the taskId from the route parameters
   const [taskData, setTaskData] = useState({
     title: '',
     description: '',
-    status: 'TODO', // Set a default status
+    status: 'TODO',
   });
   const [error, setError] = useState(null);
 
+  useEffect(() => {
+    // If taskId is provided, fetch the task data for update
+    if (taskId) {
+      const fetchTaskData = async () => {
+        try {
+          const response = await getTask(taskId);
+          setTaskData(response);
+        } catch (error) {
+          console.error('Error fetching task:', error);
+        }
+      };
+
+      fetchTaskData();
+    }
+  }, [taskId]);
+
   const handleChange = (e) => {
     setTaskData({ ...taskData, [e.target.name]: e.target.value });
-    setError(null);  // Clear error on input change
+    setError(null);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      await createTask(taskData);
-      navigate('/');  // Redirect to the home page after successful task creation
+      // If taskId is provided, update the task; otherwise, create a new task
+      if (taskId) {
+        await updateTask(taskId, taskData);
+      } else {
+        await createTask(taskData);
+      }
+
+      navigate('/'); // Redirect to the home page after successful task creation or update
     } catch (error) {
-      console.error('Error creating task:', error);
-      setError(error.response?.data || 'Unknown error');  // Set the error message
+      console.error('Error creating/updating task:', error);
+      setError(error.response?.data || 'Unknown error');
     }
   };
 
+  const onCancel = () => {
+    navigate('/');
+  }
+
   return (
     <div className="add-task-container">
-      <h2>Add Task</h2>
-      {error && <div className="error-message">{error}</div>}  {/* Display error if it exists */}
+      <h2>{taskId ? 'Update Task' : 'Add Task'}</h2>
+      {error && <div className="error-message">{error}</div>}
       <form onSubmit={handleSubmit}>
         <label>
           Title:
@@ -54,7 +81,8 @@ const AddTask = () => {
           </select>
         </label>
         <br />
-        <button type="submit">Add Task</button>
+        <button type="submit">{taskId ? 'Update Task' : 'Add Task'}</button>
+        <button type="button" onClick={() => onCancel()}>Cancel</button>
       </form>
     </div>
   );

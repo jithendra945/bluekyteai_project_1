@@ -21,6 +21,7 @@ ReactDOM.render(
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/add-task" element={<AddTask />} />
+        <Route path="/add-task/:taskId" element={<AddTask />} />
       </Routes>
     </Router>
   </React.StrictMode>,
