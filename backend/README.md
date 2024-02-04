@@ -5,8 +5,8 @@ This repository contains the backend code for the BlueKyteAI project.
 ## Prerequisites / Developed on this specs
 
 - Python 3.10.12
-- pip (package installer for Python)
-- PostgreSQL (>=10)
+- pip (package installer for Python) https://www.postgresql.org/download/linux/ubuntu/
+- PostgreSQL (>=10) https://www.postgresql.org/download/linux/ubuntu/
 
 ## Getting Started
 
@@ -45,7 +45,7 @@ Follow these steps to set up and run the backend:
         ALTER ROLE mytestpostgresuser WITH CREATEDB;
         \q
         ```
-    - Update Django settings in `backend/task_manager/settings.py`:
+    - Update DATABASES relevant USER and PASSWORD in `backend/task_manager/settings.py`:
         ```python
         DATABASES = {
             'default': {
@@ -61,22 +61,29 @@ Follow these steps to set up and run the backend:
 
 4. **Apply Migrations:**
     ```bash
-    python backend/manage.py migrate
+    python manage.py migrate
     ```
 
 5. **Create a Superuser:**
     ```bash
-    python backend/manage.py createsuperuser
+    python manage.py createsuperuser
     ```
     Follow the prompts to create a superuser account.
 
 6. **Run the Development Server:**
     ```bash
-    python backend/manage.py runserver
+    python manage.py runserver
     ```
     The backend server will start at http://127.0.0.1:8000/.
 
-7. **Admin Interface:**
+7. **Run the tests:**
+    ```bash
+    python manage.py test
+    ```
+    This will create a test database, run tests which are in tests.py, gives a status and detroys test database
+    Status should be OK
+
+8. **Admin Interface:**
     Open your web browser and go to http://127.0.0.1:8000/admin/
     Log in using the superuser credentials created in the previous step.
     The Django admin interface allows you to manage and manipulate your application's data. 

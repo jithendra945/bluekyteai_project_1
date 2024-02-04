@@ -1,7 +1,7 @@
 Project Setup
 Navigate to the frontend directory:
 ```
-cd frontend/myfrontend
+cd myfrontend
 ```
 
 Install dependencies:
