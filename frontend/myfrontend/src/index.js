@@ -10,6 +10,7 @@ import Login from './Login';
 import reportWebVitals from './reportWebVitals';
 
 import './App.css';
+import AddTask from './AddTask';
 
 
 ReactDOM.render(
@@ -19,6 +20,7 @@ ReactDOM.render(
         <Route path="/" element={<App />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/add-task" element={<AddTask />} />
       </Routes>
     </Router>
   </React.StrictMode>,

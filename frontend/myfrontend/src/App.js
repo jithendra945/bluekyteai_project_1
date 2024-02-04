@@ -1,8 +1,8 @@
 // frontend/myfrontend/src/App.js
 import React, { useState, useEffect } from 'react';
-import { Link, Navigate, Routes, Route } from 'react-router-dom';
+import { Link, Routes, Route } from 'react-router-dom';
 import { getTasks, logout } from './api';
-import AddTask from './AddTask'; // Import the new component
+import AddTask from './AddTask';
 
 const TaskList = ({ tasks }) => (
   <ul>
@@ -66,19 +66,13 @@ const App = () => {
           <Link to="/add-task">Add Task</Link>
         </div>
       ) : (
-        <ul>
-          {tasks.map((task) => (
-            <li key={task.id}>
-              <strong>{task.title}</strong> - {task.description} ({task.status})
-            </li>
-          ))}
-        </ul>
+        <>
+          <TaskList tasks={tasks} />
+          <Routes>
+            <Route path="/add-task" element={<AddTask />} />
+          </Routes>
+        </>
       )}
-      <Routes>
-        {/* <Route path="/" element={<Navigate to="/tasks" />} /> */}
-        <Route path="/tasks" element={<TaskList tasks={tasks} />} />
-        <Route path="/add-task" element={<AddTask />} />
-      </Routes>
     </div>
   );
 };

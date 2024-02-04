@@ -12,7 +12,7 @@ const Signup = () => {
     password: '',
     confirmPassword: '',
   });
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
 
   // Check login status on component mount
   useEffect(() => {
@@ -24,7 +24,7 @@ const Signup = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setError(null);
+    setError('');
   };
 
   const handleSubmit = async (e) => {
